@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/weui/weui.css">
+    <script src="/static/weui/weui.min.js"></script>
+    <script src="/static/js/jquery-2.1.4.js"></script>
+
+</head>
+<style>
+
+    .btn_pay
+    {
+        margin-top: 30px;
+    }
+    .weui-cell__bd p{
+        text-align: center;
+    }
+</style>
+<link rel="stylesheet" href="/static/weui/weui.css">
+<script src="/static/weui/weui.min.js"></script>
+<body>
+<div class="weui-cells__title">tkj-demo</div>
+<div class="weui-form">
+    <div class="weui-cells__group weui-cells__group_form">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">订单号</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <label>{{ order_no }}</label>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">金额:</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="txt_amount" class="weui-input" type="number" placeholder="输入金额" value="1.00" >
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-cells__group weui-cells__group_form">
+        <div class="weui-cells__title">支付方式</div>
+        <div class="weui-cells weui-cells_radio">
+            <label class="weui-cell weui-cell_active weui-check__label" for="x11">
+                <div class="weui-cell__bd">
+                    <p>支付宝扫码</p>
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" class="weui-check" name="radio1" id="x11" code="903">
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+            <label class="weui-cell weui-cell_active weui-check__label" for="x12">
+                <div class="weui-cell__bd">
+                    <p>支付宝H5</p>
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="radio1" class="weui-check" id="x12" code="904"  checked>
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+            <label class="weui-cell weui-cell_active weui-check__label" for="x13">
+                <div class="weui-cell__bd">
+                    <p>微信扫码</p>
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" class="weui-check" name="radio1" id="x13" code="902">
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+            <label class="weui-cell weui-cell_active weui-check__label" for="x14">
+                <div class="weui-cell__bd">
+                    <p>微信H5</p>
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="radio1" class="weui-check" id="x14"  code="911">
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+
+        </div>
+    </div>
+
+    <a class="weui-btn weui-btn_primary btn_pay ">立即支付</a>
+
+</div>
+
+<form id="form1" action="/i/sdo" method="post" style="display: none">
+    <input id="fm_order_no" type="hidden" name="order_no">
+    <input id="fm_amount" type="hidden" name="amount">
+    <input id="fm_paycode" type="hidden" name="paycode">
+</form>
+
+</body>
+</html>
+<script>
+    $(function () {
+        $('.btn_pay').on("click",function () {
+
+            let order_no='{{order_no}}';
+            let amount= $('#txt_amount').val();
+            let pay_code=$("input[name='radio1']:checked").attr('code');
+
+            if (amount == undefined || amount == '' || parseInt(amount)<=0 ) {
+                weui.alert('请填写金额')
+                return false;
+            }
+            if (pay_code == undefined || pay_code == '' ) {
+                weui.alert('请选择支付类型!')
+                return false;
+            }
+
+            $('#fm_order_no').val(order_no);
+            $('#fm_amount').val(amount);
+            $('#fm_paycode').val(pay_code);
+
+            $('#form1').submit();
+
+
+            // $.post('/demo/sdorder',{'order_no':order_no,'amount':amount,'paycode':pay_code},function (data,status) {
+            //
+            //   console.log(data)
+            //   weui.toast(data.msg,3000)
+            //   ;
+            // })
+
+
+
+        })
+
+    })
+</script>
